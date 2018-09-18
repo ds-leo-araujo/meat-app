@@ -370,5 +370,49 @@
       "restaurantId": "tasty-treats"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "address": "R LOURIVAL HUGUENEY",
+      "number": "111",
+      "optionalAddress": "Q01 C04 - CONDOMÍNIO JARDIM BOTÂNICO",
+      "paymentOption": "MON",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "capp"
+        },
+        {
+          "quantity": 1,
+          "menuId": "espreso"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "address": "R LOURIVAL HUGUENEY",
+      "number": "111",
+      "optionalAddress": "Q01 C04 - CONDOMÍNIO JARDIM BOTÂNICO",
+      "paymentOption": "DEB",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "burger"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "address": "R. Orientino M. da Silva",
+      "number": "120",
+      "optionalAddress": "Q16 C01",
+      "paymentOption": "REF",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "straw"
+        }
+      ],
+      "id": 3
+    }
+  ]
 }
