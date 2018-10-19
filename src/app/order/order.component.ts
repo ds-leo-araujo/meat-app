@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { tap } from 'rxjs/operators';
 
 import { CartItem } from '../restaurant-detail/shopping-cart/cart-item.model';
 import { Order, OrderItem } from './order.model';
@@ -17,6 +19,7 @@ export class OrderComponent implements OnInit {
   numberPattern = /^[0-9]*$/;
   orderForm: FormGroup;
   delivery = 8;
+  orderId: string;
 
   paymentOptions: RadioOption[] = [
     { label: 'Dinheiro', value: 'MON' },
@@ -42,15 +45,15 @@ export class OrderComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.orderForm = this.formBuilder.group({
-      name: this.formBuilder.control('', [Validators.required, Validators.minLength(4)]),
+    this.orderForm = new FormGroup({
+      name: new FormControl('', {validators: [Validators.required, Validators.minLength(4)]}),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)] ),
       emailConfirmation: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
       address: this.formBuilder.control('', [Validators.required, Validators.minLength(4)]),
       number: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
       optionalAddress: this.formBuilder.control(''),
       paymentOption: this.formBuilder.control('', [Validators.required])
-    }, {validator: OrderComponent.equalsTo});
+    }, { validators: [OrderComponent.equalsTo], updateOn: 'blur'});
   }
 
   itemsValue(): number {
@@ -73,15 +76,20 @@ export class OrderComponent implements OnInit {
     this.orderService.remove(item);
   };
 
+  isOrderCompleted(): boolean {
+    return this.orderId !== undefined;
+  };
+
   checkOrder(order: Order) {
     order.orderItems = this.cartItems()
       .map((item: CartItem) => new OrderItem(item.quantity, item.menuItem.id));
 
-    this.orderService.checkOrder(order).subscribe((orderId: string) => {
-      this.router.navigate(['/order-summary']);
-      this.orderService.clear();
+    this.orderService.checkOrder(order)
+      .pipe(tap((orderId: string) => {
+        this.orderId = orderId}))
+      .subscribe((orderId: string) => {
+        this.router.navigate(['/order-summary']);
+        this.orderService.clear();
     });
-    console.log(order);
   };
-
-}
+};

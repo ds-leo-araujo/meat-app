@@ -4,10 +4,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { DeliveryCostsComponent } from './delivery-costs/delivery-costs.component';
 import { OrderComponent } from './order.component';
 import { OrderItemsComponent } from './order-items/order-items.component';
+
+import { LeaveOrderGuard } from './leave-order.guard';
+
 import { SharedModule } from '../shared/shared.module';
 
 const ROUTES: Routes = [
-    { path: '', component: OrderComponent}
+    { path: '', component: OrderComponent, canDeactivate: [LeaveOrderGuard]}
 ];
 
 @NgModule({

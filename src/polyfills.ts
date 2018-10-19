@@ -18,7 +18,8 @@ import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 
-import 'intl';
-import 'intl/locale-data/jsonp/pt-BR.js';
+// descontinuados na versão 6 do angular
+// import 'intl';
+// import 'intl/locale-data/jsonp/pt-BR.js';
 
 import 'web-animations-js/web-animations.min.js';

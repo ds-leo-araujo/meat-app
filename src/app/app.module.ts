@@ -3,9 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { LocationStrategy , HashLocationStrategy } from '@angular/common';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { LocationStrategy , HashLocationStrategy, registerLocaleData } from '@angular/common';
+import { NgModule, LOCALE_ID, ErrorHandler } from '@angular/core';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+
+import localePt from '@angular/common/locales/pt';
+
+// import do componente de tratamento de erros
+import { ApplicationErrorHandler } from './app.error-handler';
 
 // import de dependências de rotas
 import { ROUTES } from './app.routes';
@@ -26,6 +31,10 @@ import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { ReviewsComponent } from './restaurant-detail/reviews/reviews.component';
 import { ShoppingCartComponent } from './restaurant-detail/shopping-cart/shopping-cart.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LoginComponent } from './security/login/login.component';
+import { UserDetailComponent } from './header/user-detail/user-detail.component';
+
+registerLocaleData(localePt, 'pt');
 
 @NgModule({
   declarations: [
@@ -40,7 +49,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
     RestaurantDetailComponent,
     ReviewsComponent,
     ShoppingCartComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoginComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +60,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
     RouterModule.forRoot(ROUTES, {preloadingStrategy: PreloadAllModules}),
     SharedModule.forRoot(),
   ],
-  providers: [ /*{provide: LocationStrategy, useClass: HashLocationStrategy},*/ {provide: LOCALE_ID, useValue: 'pt-BR'} ],
+  providers: [ /* {provide: LocationStrategy, useClass: HashLocationStrategy},*/
+                  {provide: LOCALE_ID, useValue: 'pt'},
+                  {provide: ErrorHandler, useClass: ApplicationErrorHandler} ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
